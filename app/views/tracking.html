@@ -1,0 +1,54 @@
+<div class = "row">
+	<div class = "col-md-8">
+		<table class = "table table-striped">
+		  <thead>
+	  		<tr>
+	  			<th>Client Name</th>
+	  			<th>Most Recent PT Visit</th>
+	  			<th>Most Recent PTA Visit</th>
+	  			<th>Recent PTA Visits</th>
+	  			<th></th>
+
+	  		</tr>
+		  </thead>
+		  <tbody>
+		  	<tr ng-repeat = "s in clients" ng-init = "ptVisits = getVisits(s.$id, '/ptVisits'); ptaVisits = getVisits(s.$id, '/ptaVisits')" ng-class = "rowColor(ptVisits[ptVisits.length-1].$value, ptaVisits, startDate)">
+		  		<td>{{s.name}}</td>
+		  		<td>{{ptVisits[ptVisits.length-1].$value | date : mediumDate }}</td>
+		  		<td>{{ptaVisits[ptaVisits.length-1].$value | date : mediumDate }}</td>
+		  		<td>{{recentPTA(ptVisits[ptVisits.length-1].$value, ptaVisits)}}</td>
+		  		<td><button class = "btn" ng-click = "addForm(s)">+ Visit</button></td>
+		  	</tr>
+		  </tbody>
+		</table>
+	</div>
+	<div class = "col-md-4" ng-show = "editData">
+		 <label>Visit Type</label>
+		 <select ng-model = "visit.visitType" class = "form-control">
+		 	<option value = "ptVisit">PT Visit</option>
+		 	<option value = "ptaVisit">PTA Visit</option>
+		 </select>
+		 <label>New Visit Date:</label>
+		 <input type = "date" ng-model = "visit.date" placeholder = "Visit Date" class = "form-control">
+		 <label>Discharge Client</label>
+		 <input type = "checkbox" ng-model = "visit.discharge" class = "form-control">
+		 <label>Start Date</label>
+		 <input type = "date" ng-model = "visit.stDate" placeholder = "Start Date" class = "form-control">
+		 <button class = "btn btn-primary" ng-click = "submit()">Submit</button>
+	</div>
+</div>
+
+	<button class = "btn btn-primary" ng-click = "addClientView = true">Add New Client</button>
+	<div ng-show = "addClientView">
+		<input class = "form-control" ng-model = "newCli.Name" placeholder = "Full Name">
+		 <label>Start Date</label>
+		 <input type = "date" ng-model = "newCli.stDate" placeholder = "Start Date" class = "form-control">
+		 <label>New Visit Date:</label>
+		 <input type = "date" ng-model = "newCli.date" placeholder = "Visit Date" class = "form-control">
+		 <label>Visit Type</label>
+		 <select ng-model = "newCli.type" class = "form-control">
+		 	<option value = "ptVisit">PT Visit</option>
+		 	<option value = "ptaVisit">PTA Visit</option>
+		 </select>
+		 <button class = "btn btn-primary" ng-click = "addClient()">Add Client</button>
+	</div>
