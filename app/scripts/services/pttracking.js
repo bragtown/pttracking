@@ -8,7 +8,7 @@
  * Factory in the ptTrackingApp.
  */
 angular.module('ptTrackingApp')
-  .factory('ptTracking', function ($firebaseArray, $firebaseObject) {
+  .factory('ptTracking', function ($firebaseArray, $firebaseObject, Ref) {
     // Service logic
     // ...
     var ref = new Firebase("https://sweltering-heat-6104.firebaseio.com/clients")
@@ -26,13 +26,14 @@ angular.module('ptTrackingApp')
       var visitsRef = new Firebase("https://sweltering-heat-6104.firebaseio.com/clients/"+id+type)
       return $firebaseArray(visitsRef)
     }
-    var addClient = function(stDate, visitDate, visitType, cliName){
+    var addClient = function(stDate, visitDate, visitType, cliName, accountNo){
        var newClient = {
           name: cliName,
           ptaVisits: [],
           ptVisits: [],
           activeClient: true,
-          startDate:null
+          startDate:null,
+          unit: accountNo
        }
 
        if(stDate != undefined)
@@ -149,8 +150,8 @@ angular.module('ptTrackingApp')
       getRecentPTA: function(ptDate, ptaDates){
         return recentPTA(ptDate, ptaDates);
       },
-      addClientFcn: function(stDate, visitDate, visitType, cliName){
-        addClient(stDate, visitDate, visitType, cliName)
+      addClientFcn: function(stDate, visitDate, visitType, cliName, accountNo){
+        addClient(stDate, visitDate, visitType, cliName, accountNo)
       },
       addChangesFcn: function(cli, vDate, stDate, dis, vType){
         submitChanges(cli, vDate, stDate, dis, vType);

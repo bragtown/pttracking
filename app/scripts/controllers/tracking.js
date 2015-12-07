@@ -8,7 +8,14 @@
  * Controller of the ptTrackingApp
  */
 angular.module('ptTrackingApp')
-  .controller('TrackingCtrl', function ($scope, ptTracking, $sce) {
+  .controller('TrackingCtrl', function ($scope, $firebaseObject, ptTracking, $sce, Ref, user) {
+    
+    var accountNo = ''
+    var profile = new Firebase('https://sweltering-heat-6104.firebaseio.com/users/'+user.uid)
+    profile.once("value", function(snapshot){ 
+      var data = snapshot.val();
+      accountNo = data.account
+    })
     $scope.editData = false;
     $scope.visit = {
       stDate: undefined,
@@ -44,7 +51,7 @@ angular.module('ptTrackingApp')
     }
 
     $scope.addClient = function(){
-      ptTracking.addClientFcn($scope.newCli.stDate, $scope.newCli.date, $scope.newCli.type, $scope.newCli.Name);
+      ptTracking.addClientFcn($scope.newCli.stDate, $scope.newCli.date, $scope.newCli.type, $scope.newCli.Name, accountNo);
     }
     $scope.recentPTA = function(ptDate, ptaDates){
       return ptTracking.getRecentPTA(ptDate, ptaDates)
